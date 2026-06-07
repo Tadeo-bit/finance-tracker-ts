@@ -12,9 +12,11 @@ export const Header: React.FC = () => {
       boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
     }}>
       {/* 1. SECTOR LOGO */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontFamily: 'sans-serif' }}>
         <span style={{ fontSize: '24px' }}>🎯</span>
-        <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold' }}>FinanzApp</h2>
+        <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#ffffff' }}>
+          Finanz<span style={{ color: '#60a5fa' }}>Tracker</span>
+        </h2>
       </div>
 
       {/* 2. SECTOR NAVEGACIÓN (Futuro Router) */}

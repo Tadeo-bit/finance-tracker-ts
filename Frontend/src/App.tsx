@@ -41,9 +41,15 @@ function App() {
     <main style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
       
       <Header />
-      <h1>Finance Tracker 🚀</h1>
-      <p>Modo Aprendizaje: Fundamentos de JS + TS</p>
-      
+      {/* CABECERA DE LA APP */}
+    <div style={{ textAlign: 'center', margin: '30px 0', padding: '0 16px', fontFamily: 'sans-serif' }}>
+      <h1 style={{ margin: 0, fontSize: '32px', fontWeight: '900', color: '#1f2937', letterSpacing: '-0.5px' }}>
+        Finanz<span style={{ color: '#2563eb' }}>Tracker</span>
+      </h1>
+      <p style={{ margin: '8px 0 0 0', fontSize: '12px', color: '#6b7280', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+        Gestor de finanzas personales
+      </p>
+    </div>
       {/* 1. EL HIJO QUE TE PIDE EL WALKIE-TALKIE (Hijo -> Padre) */}
       <TransactionForm 
           onAddTransaction={(nueva) => setTransactions([...transactions, nueva])} 

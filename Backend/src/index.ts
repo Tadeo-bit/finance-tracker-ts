@@ -1,18 +1,27 @@
 import express from 'express';
+import cors from 'cors';
+import transactionRoutes from './Routes/transactions.js'; // <-- 1. Importamos las rutas
 
-// 1. Inicializamos la aplicación de Express
 const app = express();
-
-// 2. Definimos el puerto donde va a escuchar nuestro servidor
 const PORT = 3000;
 
-// 3. Creamos nuestra primera RUTA (URL). 
-// Cuando alguien entre a la raíz de nuestro servidor, le respondemos un texto.
+// 2. CONFIGURACIÓN DE CORS
+// permiso exclusivo a tu puerto del Frontend
+app.use(cors({
+  origin: 'http://localhost:5173' 
+}));
+
+// Middleware para que Express entienda JSON 
+app.use(express.json());
+
+// 2. Vincula las rutas con un "prefijo"
+// Esto significa que todas las rutas de ese archivo van a empezar con /api/transactions
+app.use('/api/transactions', transactionRoutes);
+
 app.get('/', (req, res) => {
   res.send('¡Hola Mundo! Mi primer servidor Backend oficial de FinanzApp 🚀');
 });
 
-// Nueva ruta para consultar el estado del sistema en formato JSON
 app.get('/api/status', (req, res) => {
   res.json({
     status: "online",
@@ -22,7 +31,6 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-// 4. Le decimos al servidor que empiece a escuchar los pedidos en el puerto elegido
 app.listen(PORT, () => {
   console.log(`⚡️ [server]: Servidor corriendo en http://localhost:${PORT}`);
 });

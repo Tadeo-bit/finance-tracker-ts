@@ -13,27 +13,49 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
   const [monto, setMonto] = useState('');
   const [tipo, setTipo] = useState<'ingreso' | 'gasto'>('gasto');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => { // 1. Agregamos async
     e.preventDefault();
 
-    // Validación con Early Return
+    // Validación con Early Return (Mantenemos tu lógica intacta)
     if (!descripcion || !monto || Number(monto) === 0) return;
 
-    const nuevaTransaccion: Transaction = {
-      id: Date.now().toString(),
+    // 2. Armamos el objeto SIN ID, con los nombres que espera tu Backend en el req.body
+    const nuevaTransaccionData = {
       description: descripcion,
       amount: Number(monto),
-      category: 'General',
-      date: new Date().toISOString().split('T')[0],
+      category: 'General', // Valor por defecto por ahora
+      date: new Date().toISOString().split('T')[0], // Fecha de hoy
       type: tipo
     };
 
-    // Ejecución de la función que recibe del padre
-    onAddTransaction(nuevaTransaccion);
+    try {
+      // 3. Despachamos el avión hacia el Backend (Puerto 3000)
+      const response = await fetch('http://localhost:3000/api/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json' // Avisamos que viaja un JSON
+        },
+        body: JSON.stringify(nuevaTransaccionData) // Convertimos el objeto a texto
+      });
 
-    // Limpiamos los inputs locales
-    setDescripcion('');
-    setMonto('');
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor Backend');
+      }
+
+      // 4. El Backend nos devuelve el objeto oficial con el ID ya puesto
+      const transaccionCreada: Transaction = await response.json();
+
+      // 5. Se la pasamos al componente padre para que la dibuje en la pantalla
+      onAddTransaction(transaccionCreada);
+
+      // 6. Limpiamos los inputs locales (Solo si el proceso fue exitoso)
+      setDescripcion('');
+      setMonto('');
+
+    } catch (error) {
+      console.error("Error táctico al guardar en el Backend:", error);
+      alert("No se pudo guardar el movimiento. ¿Prendiste el Backend en la terminal?");
+    }
   };
 
   return (

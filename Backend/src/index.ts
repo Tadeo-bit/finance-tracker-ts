@@ -1,12 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import transactionRoutes from './Routes/transactions.js'; // <-- 1. Importamos las rutas
+import transactionRoutes from './Routes/transactions.js'; 
 
 const app = express();
 const PORT = 3000;
 
 // 2. CONFIGURACIÓN DE CORS
-// permiso exclusivo a tu puerto del Frontend
+// permiso exclusivo al puerto del Frontend
 app.use(cors({
   origin: 'http://localhost:5173' 
 }));

@@ -16,10 +16,10 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
   const handleSubmit = async (e: React.FormEvent) => { // 1. Agregamos async
     e.preventDefault();
 
-    // Validación con Early Return (Mantenemos tu lógica intacta)
+    // Validación con Early Return 
     if (!descripcion || !monto || Number(monto) === 0) return;
 
-    // 2. Armamos el objeto SIN ID, con los nombres que espera tu Backend en el req.body
+    // 2. Armar el objeto SIN ID, con los nombres que espera el Backend en el req.body
     const nuevaTransaccionData = {
       description: descripcion,
       amount: Number(monto),
@@ -29,7 +29,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
     };
 
     try {
-      // 3. Despachamos el avión hacia el Backend (Puerto 3000)
+      // 3. Datos hacia el Backend (Puerto 3000)
       const response = await fetch('http://localhost:3000/api/transactions', {
         method: 'POST',
         headers: {
@@ -42,7 +42,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
         throw new Error('Error en la respuesta del servidor Backend');
       }
 
-      // 4. El Backend nos devuelve el objeto oficial con el ID ya puesto
+      // 4. El Backend devuelve el objeto oficial con el ID ya puesto
       const transaccionCreada: Transaction = await response.json();
 
       // 5. Se la pasamos al componente padre para que la dibuje en la pantalla

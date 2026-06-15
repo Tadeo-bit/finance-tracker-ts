@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/transactions');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions`);
         if (!response.ok) {
           throw new Error('Error al conectar con el servidor');
         }
@@ -52,7 +52,7 @@ function App() {
 
       <hr />
       
-      {/* 2. NUEVO COMPONENTE: REEMPLAZA EL SECTION VIEJO (Padre -> Hijo) */}
+      {/* 2. NUEVO COMPONENTE: (Padre -> Hijo) */}
       <BalanceBoard 
         balanceActual={balanceActual}
         ingresosTotales={ingresosTotales}

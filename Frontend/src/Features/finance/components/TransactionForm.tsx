@@ -30,7 +30,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
 
     try {
       // 3. Datos hacia el Backend (Puerto 3000)
-      const response = await fetch('http://localhost:3000/api/transactions', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json' // Avisamos que viaja un JSON

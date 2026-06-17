@@ -5,10 +5,20 @@ import transactionRoutes from './Routes/transactions.js';
 const app = express();
 const PORT = 3000;
 
+const allowedOrigins = [
+  'http://localhost:5173', // Para desarrollar en mi PC
+  'https://finance-tracker-ts-one.vercel.app' // URL oficial de Vercel 
+];
 // 2. CONFIGURACIÓN DE CORS
-// permiso exclusivo al puerto del Frontend
 app.use(cors({
-  origin: 'http://localhost:5173' 
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bloqueado por CORS: Origen no permitido'));
+    }
+  },
+  credentials: true
 }));
 
 // Middleware para que Express entienda JSON 

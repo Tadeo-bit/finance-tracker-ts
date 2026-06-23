@@ -13,7 +13,7 @@ interface Transaction {
   type: 'ingreso' | 'gasto';
 }
 
-const initialTransactions: Transaction[] = [
+let initialTransactions: Transaction[] = [
   {
     id: '1',
     amount: 1000000,
@@ -58,11 +58,31 @@ router.post('/', (req: Request, res: Response) => {
     date,
 };
 
-  // "Guardamos" en nuestro array temporal
+  // "Guardamos" en el array temporal
   initialTransactions.push(newTransaction);
 
   // Respondemos con el objeto creado y estatus 201 (Created)
   res.status(201).json(newTransaction);
+});
+
+//Eliminar transacciones 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  // Revisamos si existe usando tu array
+  const existe = initialTransactions.some(t => t.id === id);
+
+  if (!existe) {
+    return res.status(404).json({ error: 'Transacción no encontrada' });
+  }
+
+  // Aplicamos la lógica filtrando el array
+  initialTransactions = initialTransactions.filter(t => t.id !== id);
+
+  res.status(200).json({ 
+    message: 'Transacción eliminada con éxito',
+    idEliminado: id 
+  });
 });
 
 export default router;

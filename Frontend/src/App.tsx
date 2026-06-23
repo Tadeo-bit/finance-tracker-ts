@@ -32,6 +32,28 @@ function App() {
   const ingresosTotales = calcularTotalIngresos(transactions);
   const gastosTotales = calcularTotalGastos(transactions);
 
+  const handleDeleteTransaction = async (id: string) => {
+    try {
+      // 1. Le pegamos al endpoint DELETE que creamos en Express
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('No se pudo eliminar la transacción en el servidor');
+      }
+
+      // 2. Si el servidor respondió OK (200), limpiamos la pantalla al instante con el filtro
+      setTransactions((prevTransactions) => 
+        prevTransactions.filter(t => t.id !== id)
+      );
+
+    } catch (error) {
+      console.error('Error al borrar:', error);
+      alert('Hubo un error al intentar borrar el movimiento.');
+    }
+  };
+
   return (
     <main style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
       
@@ -62,7 +84,10 @@ function App() {
       <hr />
       
       {/* 3. EL HIJO QUE RECIBE LA LISTA VIVA (Padre -> Hijo) */}
-      <TransactionList listado={transactions} />
+      <TransactionList 
+        listado={transactions} 
+        onDeleteTransaction={handleDeleteTransaction}
+      />
       
     </main>
   );

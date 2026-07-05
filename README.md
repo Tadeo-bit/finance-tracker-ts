@@ -1,33 +1,38 @@
 # 💰 FinanzTracker - Gestor de Finanzas Personales
 
-> ⚠️ **PROYECTO EN DESARROLLO** (Iniciado el 18 de mayo de 2026). Actualmente en etapa de prototipado inicial y configuración de arquitectura Fullstack.
+> ⚠️ **PROYECTO EN DESARROLLO** (Iniciado el 18 de mayo de 2026). Actualmente consolidando las bases de la arquitectura Fullstack e Integración Continua (CI/CD).
 
-FinanzTracker es una aplicación para el control de ingresos, gastos y balances. Está estructurada como un **monorepositorio** que separa estrictamente el cliente (`Frontend`) del servidor (`Backend`).
+FinanzTracker es una aplicación robusta para el control de ingresos, gastos y balances financieros. Está estructurada de forma modular, separando estrictamente la interfaz de usuario (`Frontend`) de la lógica del servidor (`Backend`).
 
-🚀 **Link del Frontend en vivo:** [https://finance-tracker-ts-one.vercel.app/](https://finance-tracker-ts-one.vercel.app/)
+🚀 **Link de la Aplicación en vivo (Frontend):** [https://finance-tracker-ts-one.vercel.app/](https://finance-tracker-ts-one.vercel.app/)
 
 ---
 
 ## 🏗️ Estado Actual y Arquitectura
 
 ### 💻 Frontend (React + TypeScript + Vite)
-* **Arquitectura:** Datos centralizados en una *Fuente de Verdad Única* (`useState`). Los cálculos de balances se procesan mediante *funciones puras* y estructuras de datos tipadas con `interfaces` de TypeScript.
-* **Estilos:** Renderizados temporalmente mediante **estilos en línea (inline styles)** para agilizar el desarrollo lógico. Se migrará a CSS por componentes en la próxima fase.
-* **Persistencia:** Sin persistencia actual (datos volátiles en memoria). Aspira a conectarse a la API de forma definitiva.
+* **Estado:** Desplegado de forma continua en **Vercel**.
+* **Gestión de Estado:** Centralizado en `App.tsx` (*State Lifting*) actuando como Fuente de Verdad Única. Los componentes hijos se comunican mediante paso de funciones tipadas como propiedades (*Props*).
+* **Consumo de API:** Comunicación asíncrona mediante `fetch` integrada con **Variables de Entorno (`VITE_API_URL`)** para alternar automáticamente entre desarrollo local y producción.
+* **Lógica de Datos:** El balance actual, ingresos y gastos totales se calculan dinámicamente mediante *funciones puras de orden superior* aisladas en un módulo de utilidades (`utils/financeHelpers.ts`).
+* **Estilos:** Renderizados temporalmente mediante **estilos en línea (inline styles)** para priorizar el desarrollo de la lógica de negocio. Se migrará a estilos modulares en la Etapa 2.
 
 ### ⚙️ Backend (Node.js + Express + TypeScript)
-* **Servidor Local:** Montado en el puerto `3000` con soporte para ES Modules mediante el modo *watch* de `tsx`.
-* **API REST Inicial:** Cuenta con dos endpoints de prueba funcionales:
-  * `GET /`: Validación de conectividad básica (Texto plano).
-  * `GET /api/status`: Simulación de respuesta de datos en formato **JSON** (Estado, versión y marca de tiempo).
+* **Estado:** Desplegado de forma continua en **Render** con recarga automática vinculada a GitHub.
+* **Seguridad:** Configuración de middleware **CORS dinámico** para restringir el acceso y permitir peticiones únicamente desde el dominio oficial del Frontend y el entorno local.
+* **API REST Funcional:** Sistema CRUD inicial completo en memoria que procesa:
+  * `GET /api/transactions`: Suministra el listado histórico en formato JSON.
+  * `POST /api/transactions`: Recibe e inserta nuevos movimientos validando campos obligatorios.
+  * `PUT /api/transactions/:id`: Actualiza quirúrgicamente un movimiento mediante búsqueda de índices (`.findIndex()`) y desestructuración de parámetros y cuerpo (`req.params` y `req.body`).
+  * `DELETE /api/transactions/:id`: Remueve movimientos del flujo de datos usando persistencia temporal en servidor.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-* **Frontend:** React.js, TypeScript, Vite, Estilos en línea.
+* **Frontend:** React.js, TypeScript, Vite.
 * **Backend:** Node.js, Express, TypeScript, TSX.
-* **Despliegue:** Vercel (Frontend).
+* **Despliegue e Infraestructura:** Vercel (Frontend), Render (Backend).
 
 ---
 
@@ -40,6 +45,7 @@ git clone <url-del-repositorio>
 Bash
 cd Frontend
 npm install
+# Nota: Crear archivo .env con la variable VITE_API_URL=http://localhost:3000
 npm run dev
 Disponible en: http://localhost:5173
 
@@ -47,5 +53,5 @@ Disponible en: http://localhost:5173
 Bash
 cd Backend
 npm install
-npx tsx --watch src/index.ts
-Disponible en: http://localhost:3000/api/status
+npm run dev
+Disponible en: http://localhost:3000

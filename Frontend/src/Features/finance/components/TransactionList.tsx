@@ -1,13 +1,44 @@
 import React from 'react';
 import { type Transaction } from '../../../types';
+import { useState } from 'react';
 
 // 1. El molde: Este componente EXIGE recibir un array de transacciones desde el padre
 interface TransactionListProps {
   listado: Transaction[];
   onDeleteTransaction: (id: string) => void;
+  onEditTransaction: (id: string, updatedData: Omit<Transaction, 'id'>) => Promise<void>;
 }
 
-export const TransactionList: React.FC<TransactionListProps> = ({ listado, onDeleteTransaction }) => {
+export const TransactionList: React.FC<TransactionListProps> = ({ listado, onDeleteTransaction, onEditTransaction }) => {
+  
+// Este estado guarda el ID de la transacción que se está editando, o null si ninguna se está editando
+const [editingId, setEditingId] = useState<string | null>(null);
+
+// Estos estados guardan temporalmente lo que el usuario escribe mientras edita
+const [editDescription, setEditDescription] = useState('');
+const [editAmount, setEditAmount] = useState('');
+ 
+// La función que activa el "Modo Edición"
+const startEditing = (transaction: Transaction) => {
+  setEditingId(transaction.id);
+  setEditDescription(transaction.description);
+  setEditAmount(transaction.amount.toString());
+};
+
+// La función que guarda los cambios
+const handleSave = async (id: string, originalType: string, originalCategory: string, originalDate: string) => {
+  // Llamamos a la prop que viaja desde App, pasándole el ID y los datos modificados
+  await onEditTransaction(id, {
+    description: editDescription,
+    amount: Number(editAmount),
+    type: originalType as 'ingreso' | 'gasto',
+    category: originalCategory,
+    date: originalDate
+  });
+  // Una vez guardado, reseteamos el ID a null para cerrar el formulario
+  setEditingId(null);
+};
+
   return (
   <div style={{ marginTop: '20px' }}>
     <h3>Historial de Movimientos</h3>

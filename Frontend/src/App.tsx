@@ -54,6 +54,36 @@ function App() {
     }
   };
 
+  const handleEditTransaction = async (id: string, updatedData: Omit<Transaction, 'id'>) => {
+  try {
+    // 1. Mandamos la petición PUT al servidor con el ID en la URL
+    // Y le pasamos en el "body" el objeto con los datos modificados convertidos a texto JSON
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json', // Avisamos al servidor que le mandamos un JSON
+      },
+      body: JSON.stringify(updatedData), 
+    });
+
+    if (!response.ok) {
+      throw new Error('No se pudo actualizar la transacción en el servidor');
+    }
+
+    const data = await response.json();
+    // Aquí el servidor nos devuelve un objeto que tiene la propiedad .transaction con el movimiento ya editado
+
+    // 2. Lógica de estado: Buscamos en nuestro estado de React la transacción vieja y la reemplazamos por la nueva
+    setTransactions((prevTransactions) =>
+      prevTransactions.map((t) => (t.id === id ? data.transaction : t))
+    );
+
+  } catch (error) {
+    console.error('Error al editar:', error);
+    alert('Hubo un error al intentar guardar los cambios.');
+  }
+  };
+
   return (
     <main style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
       
@@ -87,6 +117,7 @@ function App() {
       <TransactionList 
         listado={transactions} 
         onDeleteTransaction={handleDeleteTransaction}
+        onEditTransaction={handleEditTransaction}
       />
       
     </main>

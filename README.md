@@ -2,7 +2,7 @@
 
 > ⚠️ **PROYECTO EN DESARROLLO** (Iniciado el 18 de mayo de 2026). Actualmente consolidando las bases de la arquitectura Fullstack e Integración Continua (CI/CD).
 
-FinanzTracker es una aplicación robusta para el control de ingresos, gastos y balances financieros. Está estructurada de forma modular, separando estrictamente la interfaz de usuario (`Frontend`) de la lógica del servidor (`Backend`).
+FinanzTracker es una aplicación robusta para el control de ingresos, gastos y balances financieros personales. Está estructurada de forma modular, separando estrictamente la interfaz de usuario (`Frontend`) de la lógica del servidor (`Backend`).
 
 🚀 **Link de la Aplicación en vivo (Frontend):** [https://finance-tracker-ts-one.vercel.app/](https://finance-tracker-ts-one.vercel.app/)
 

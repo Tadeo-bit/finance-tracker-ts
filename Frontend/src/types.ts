@@ -1,6 +1,5 @@
 // 1. FUNDAMENTO: Tipo de unión. 
 // Definimos textualmente las ÚNICAS dos opciones válidas para el tipo de movimiento.
-// JavaScript no tiene esto; TypeScript sí.
 export type TransactionType = 'ingreso' | 'gasto';
 
 // 2. FUNDAMENTO: La Interface (El Molde)

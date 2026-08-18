@@ -8,7 +8,12 @@ import { BalanceBoard } from './Features/finance/components/BalanceBoard';
 
 function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  
+  const [selectedMonth, setSelectedMonth] = useState<string>('TODOS');
+
+  const filteredTransactions = selectedMonth === 'TODOS'
+  ? transactions
+  : transactions.filter((t) => t.date.startsWith(selectedMonth));
+
   // Hook para cargar los datos del backend al montar el componente
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -112,10 +117,33 @@ function App() {
       />
       
       <hr />
+
+      <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#e2e8f0', borderRadius: '8px' }}>
+        <label style={{ fontWeight: 'bold', marginRight: '10px' }}>Filtrar por Mes:</label>
+      <select 
+          value={selectedMonth} 
+           onChange={(e) => setSelectedMonth(e.target.value)}
+          style={{ padding: '6px 12px', borderRadius: '4px', border: '1px solid #cbd5e1' }}
+      >
+          <option value="TODOS">Ver Todo el Historial 📅</option>
+          <option value="2026-01">Enero 2026</option>
+          <option value="2026-02">Febrero 2026</option>
+          <option value="2026-03">Marzo 2026</option>
+          <option value="2026-04">Abril 2026</option>
+          <option value="2026-05">Mayo 2026</option>
+          <option value="2026-06">Junio 2026</option>
+          <option value="2026-07">Julio 2026</option>
+          <option value="2026-08">Agosto 2026</option>
+          <option value="2026-09">Septiembre 2026</option>
+          <option value="2026-10">Octubre 2026</option>
+          <option value="2026-11">Noviembre 2026</option>
+          <option value="2026-12">Diciembre 2026</option>
+      </select>
+      </div>
       
       {/* 3. EL HIJO QUE RECIBE LA LISTA VIVA (Padre -> Hijo) */}
       <TransactionList 
-        listado={transactions} 
+        listado={filteredTransactions}
         onDeleteTransaction={handleDeleteTransaction}
         onEditTransaction={handleEditTransaction}
       />

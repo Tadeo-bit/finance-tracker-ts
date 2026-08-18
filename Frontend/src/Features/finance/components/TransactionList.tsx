@@ -96,8 +96,13 @@ const handleSave = async (id: string, originalType: string, originalCategory: st
                     </button>
                   </div>
                 ) : (
+                  // MODO LECTURA 
                   <>
-                    <span>{t.description}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span style={{ fontWeight: '500' }}>{t.description}</span>
+                      {/* 📅 Imprimimos la propiedad date en tamaño más chico */}
+                      <span style={{ color: '#64748b', fontSize: '12px' }}>{t.date}</span>
+                    </div>
                     
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                       <span style={{ fontWeight: 'bold', color: t.type === 'ingreso' ? '#22c55e' : '#ef4444' }}>

@@ -12,6 +12,9 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
   const [descripcion, setDescripcion] = useState('');
   const [monto, setMonto] = useState('');
   const [tipo, setTipo] = useState<'ingreso' | 'gasto'>('gasto');
+  // Inicializamos el estado con la fecha de hoy en formato YYYY-MM-DD para que el input arranque completo por defecto
+  const [date, setDate] = useState<string>(new Date().toISOString().split('T')[0]);
+
 
   const handleSubmit = async (e: React.FormEvent) => { // 1. Agregamos async
     e.preventDefault();
@@ -24,7 +27,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
       description: descripcion,
       amount: Number(monto),
       category: 'General', // Valor por defecto por ahora
-      date: new Date().toISOString().split('T')[0], // Fecha de hoy
+      date: date,
       type: tipo
     };
 
@@ -51,6 +54,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
       // 6. Limpiamos los inputs locales (Solo si el proceso fue exitoso)
       setDescripcion('');
       setMonto('');
+      setDate(new Date().toISOString().split('T')[0]);
 
     } catch (error) {
       console.error("Error táctico al guardar en el Backend:", error);
@@ -94,6 +98,19 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({ onAddTransacti
         <option value="gasto">Gasto 🔴</option>
         <option value="ingreso">Ingreso 🟢</option>
       </select>
+
+       <input 
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        style={{  
+        padding: '8px', 
+        borderRadius: '4px', 
+        border: '1px solid #cbd5e1' 
+        }}
+        required
+      />
+      
 
       <button type="submit" style={{
         padding: '10px',
